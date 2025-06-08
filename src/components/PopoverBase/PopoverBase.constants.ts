@@ -1,0 +1,3 @@
+const POPOVERBASE_CONSTANT = ''
+
+export default { POPOVERBASE_CONSTANT }

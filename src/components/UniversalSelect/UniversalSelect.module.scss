@@ -1,0 +1,92 @@
+.RegisterSection__Selector {
+  // width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 0 12px;
+  border-radius: 8px;
+  border: 1px solid #e6e5eb;
+  transition: all 0.3s;
+  cursor: pointer;
+  gap: 8px;
+  overflow: hidden;
+  opacity: 1;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .RegisterSection__Selector__Label {
+    width: 100%;
+    text-wrap: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: #010023;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 100%;
+    text-align: left;
+  }
+
+  .RegisterSection__Selector__Label__NewLine {
+    color: rgba($color: #010023, $alpha: 0.5);
+  }
+
+  .RegisterSection__Selector__Icon {
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+.UniversalSelect {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.Register__FormHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 10px;
+}
+
+.Register__FormField__Label {
+  color: rgba($color: #010023, $alpha: 0.5);
+  font-family: "Raleway", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.Label__Required {
+  color: #d63230;
+  font-family: "Raleway", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.ScrollableFrame {
+  display: flex;
+  overflow: hidden;
+  flex-direction: row;
+  user-select: none;
+  min-height: auto;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}

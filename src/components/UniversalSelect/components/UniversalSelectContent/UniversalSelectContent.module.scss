@@ -1,0 +1,141 @@
+.SelectorContent {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  border: 1px solid #e6e5eb;
+  background: #fff;
+  max-height: 200px;
+  max-width: 200px;
+  width: 200px;
+  overflow: hidden;
+}
+
+.SelectorList {
+  display: grid;
+  padding: 8px;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.SelectorContentHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e6e5eb;
+
+  .SelectorContentHeader_Title {
+    color: #010023;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+  }
+}
+
+.SelectorContentItem {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  gap: 0.5rem;
+  padding: 0 12px;
+  border-radius: 4px;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: 1px solid #e6e5eb;
+
+  &:hover {
+    background: #f6f6f9;
+  }
+
+  .SelectorContentItem_Text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    color: #010023;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+  }
+}
+
+.SelectorContentItem__Selected {
+  border: 1px solid #5a61e6;
+}
+
+.SearchContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  height: 40px;
+  flex-shrink: 0;
+  overflow: hidden;
+  gap: 8px;
+  border-bottom: 1px solid #e6e5eb;
+  background: rgba($color: #000000, $alpha: 0.1);
+}
+
+.SelectorWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.SearchInput {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: transparent;
+  border: none;
+  color: #010023;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+
+  &::placeholder {
+    color: #010023;
+    opacity: 0.8;
+  }
+}
+
+.SelectorSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.SelectorSectionHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e6e5eb;
+  height: 34px;
+  padding: 0 0.75rem;
+  background: #fff;
+}
+
+.SelectorSectionTitle {
+  color: #010023;
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.SelectorDivider {
+  width: 100%;
+  height: 1px;
+  flex-shrink: 0;
+  background: #e6e5eb;
+  margin: 0;
+}

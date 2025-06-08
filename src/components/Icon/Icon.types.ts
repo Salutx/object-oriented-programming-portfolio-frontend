@@ -22,7 +22,17 @@ export type IconName =
   | "trash-can-white"
   | "exit"
   | "edit"
-  | "edit-white";
+  | "edit-white"
+  | "vehicle"
+  | "model"
+  | "mark"
+  | "blocks"
+  | "list"
+  | "blocks-white"
+  | "list-white"
+  | "tachometer"
+  | "calendar"
+  | "chevron-down";
 
 export interface IconProps {
   name: IconName;

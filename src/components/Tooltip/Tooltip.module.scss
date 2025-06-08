@@ -1,0 +1,31 @@
+/**
+ * Reset MUI Styles
+**/
+
+.Tooltip :global(.MuiTooltip-tooltip) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: "Inter", sans-serif;
+  font-weight: bold;
+  color: #fff;
+  background: #5A62E6;
+  padding: 0.3rem 0.5rem !important;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  text-align: center;
+  font-size: 10px !important;
+}
+
+.MuiTooltip-arrow {
+  color: #5A62E6;
+}
+
+.TooltipRef {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  outline: none;
+}

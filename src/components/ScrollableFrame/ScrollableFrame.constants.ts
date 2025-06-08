@@ -1,0 +1,3 @@
+const SCROLLABLEFRAME_CONSTANT = '';
+
+export default { SCROLLABLEFRAME_CONSTANT };

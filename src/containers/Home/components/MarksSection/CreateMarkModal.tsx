@@ -3,6 +3,7 @@ import { CreateMarkModalProps } from "./MarkSection.types";
 import { useEffect, useState } from "react";
 import {
   useCreateMark,
+  useDeleteMark,
   useEditMark,
   useGetAllMarks,
 } from "@/queries/Marks.queries";
@@ -15,6 +16,7 @@ const CreateMarkModal = ({ onClose, initialMarkId }: CreateMarkModalProps) => {
     useCreateMark();
   const { mutate: editMarkMutate, isPending: isPendingEdit } = useEditMark();
   const { data: allMarksData } = useGetAllMarks();
+  const { mutate: deleteMark } = useDeleteMark();
 
   const [markName, setMarkName] = useState<string>("");
 
@@ -72,6 +74,27 @@ const CreateMarkModal = ({ onClose, initialMarkId }: CreateMarkModalProps) => {
     );
   };
 
+  const handleDeleteMark = () => {
+    if (!initialMarkId) return;
+
+    const confirmation = confirm(
+      "Tem certeza que deseja excluir esta marca? Esta ação não pode ser desfeita."
+    );
+
+    if (!confirmation) return;
+
+    deleteMark(initialMarkId, {
+      onSuccess: () => {
+        alert("Marca deletada com sucesso!");
+        onClose();
+      },
+      onError: (error) => {
+        console.error("Erro ao deletar marca:", error);
+        alert("Erro ao deletar marca. Tente novamente mais tarde.");
+      },
+    });
+  };
+
   return (
     <BaseModal
       title={isEditMode ? "Atualizar marca" : "Cadastrar marca"}
@@ -82,6 +105,8 @@ const CreateMarkModal = ({ onClose, initialMarkId }: CreateMarkModalProps) => {
       headerIcon="mark"
       onClose={onClose}
       disableConfirm={!markName.trim()}
+      onDelete={handleDeleteMark}
+      displayDelete={isEditMode}
     >
       <div className={Styles.MarkForm}>
         <div className={Styles.FormPreview}>

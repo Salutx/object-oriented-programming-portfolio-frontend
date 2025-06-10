@@ -5,7 +5,7 @@ import Section from "../Section.module.scss";
 import clsx from "clsx";
 import Chip from "@/components/Chip";
 import Icon from "@/components/Icon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AsideVehicleItem from "./AsideVehicleItem";
 import Button from "@/components/Button";
 import GenericModal from "@/components/GenericModal/GenericModal";
@@ -15,33 +15,19 @@ import EmptyException from "@/components/EmptyException/EmptyException";
 import CreateVehicleModal from "./CreateVehicleModal";
 
 const AsideVehicles = () => {
-  const { data: allVehiclesData, mutate: searchVehiclesMutate } =
-    useGetAllVehicles();
-
   const [viewMode, setViewMode] = useState<"blocks" | "list">("blocks");
+  const [previousSearchTerm, setPreviousSearchTerm] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const { data: allVehiclesData } = useGetAllVehicles(searchTerm);
 
   const handleChangeViewMode = (mode: "blocks" | "list") => {
     setViewMode(mode);
   };
 
   const handleSearchVehicles = () => {
-    searchVehiclesMutate(
-      { searchTerm: searchTerm.trim() },
-      {
-        onError: (error) => {
-          console.error("Error searching vehicles:", error);
-          alert("Erro ao buscar veículos. Tente novamente mais tarde.");
-        },
-      }
-    );
+    setSearchTerm(previousSearchTerm);
   };
-
-  useEffect(() => {
-    searchVehiclesMutate({
-      searchTerm: "",
-    });
-  }, [searchVehiclesMutate]);
 
   const hasData = allVehiclesData && allVehiclesData.length > 0;
   const dataCounter = getCounterFromArray(allVehiclesData);
@@ -63,8 +49,8 @@ const AsideVehicles = () => {
             className={Styles.Search__Input}
             placeholder="Pesquisar por nome, marca, modelo, cor, preço..."
             type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={previousSearchTerm}
+            onChange={(e) => setPreviousSearchTerm(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 handleSearchVehicles();
@@ -74,7 +60,7 @@ const AsideVehicles = () => {
           <button
             className={Styles.SearchButton}
             onClick={handleSearchVehicles}
-            disabled={!searchTerm.trim()}
+            disabled={!previousSearchTerm.trim()}
           >
             <p className={Styles.SearchButton__Text}>Pesquisar</p>
             <Icon name="search" size={16} />
@@ -127,6 +113,7 @@ const AsideVehicles = () => {
                     key={index}
                     data={vehicle}
                     type={viewMode}
+                    allVehiclesData={allVehiclesData}
                   />
                 ))}
               </div>

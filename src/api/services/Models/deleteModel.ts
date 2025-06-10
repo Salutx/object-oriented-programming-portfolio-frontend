@@ -2,8 +2,8 @@ import VehiclesApi from "@/api/VehiclesApi";
 
 export default async function deleteModel(modelId: number): Promise<void> {
   try {
-    const response = await VehiclesApi.delete(`/models/${modelId}`);
-    if (response.status !== 204) {
+    const response = await VehiclesApi.delete(`/models/delete/${modelId}`);
+    if (response.status !== 200) {
       throw new Error("Failed to delete model");
     }
     return response.data;

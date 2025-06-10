@@ -20,6 +20,8 @@ export const useEditModel = () => {
     mutationKey: ["models", "editModel"],
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["models"] });
+      queryClient.invalidateQueries({ queryKey: ["vehicles"] });
+      queryClient.invalidateQueries({ queryKey: ["marks"] });
     },
   });
 };

@@ -21,4 +21,6 @@ export interface BaseModalProps {
   headerIcon?: IconName;
   isLoadingConfirm?: boolean;
   confirmWidth?: "fit-content" | "full-width" | "auto" | number | "string";
+  onDelete?: () => void;
+  displayDelete?: boolean;
 }

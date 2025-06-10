@@ -2,11 +2,7 @@ import { useGetAllMarks } from "@/queries/Marks.queries";
 import { CreateVehicleModalProps } from "./AsideVehicleItem.types";
 import Styles from "./AsideVehicles.module.scss";
 import { useGetAllModels } from "@/queries/Models.queries";
-import {
-  useCreateVehicle,
-  useEditVehicle,
-  useGetAllVehicles,
-} from "@/queries/Vehicles.queries";
+import { useCreateVehicle, useEditVehicle } from "@/queries/Vehicles.queries";
 import { useEffect, useMemo, useState } from "react";
 import { VehiclePayload } from "@/types/Vehicles.interfaces";
 import { SelectItem } from "@/components/UniversalSelect/UniversalSelect.types";
@@ -15,13 +11,40 @@ import Image from "next/image";
 import UniversalSelect from "@/components/UniversalSelect";
 import UniversalInput from "@/components/UniversalInput/UniversalInput";
 
+const STATUS_OPTIONS: SelectItem[] = [
+  {
+    id: "AVAILABLE",
+    label: "Disponível",
+    icon: (
+      <div className={Styles.StatusMark} style={{ backgroundColor: "green" }} />
+    ),
+  },
+  {
+    id: "SOLD",
+    label: "Vendido",
+    icon: (
+      <div className={Styles.StatusMark} style={{ backgroundColor: "red" }} />
+    ),
+  },
+  {
+    id: "RESERVED",
+    label: "Reservado",
+    icon: (
+      <div
+        className={Styles.StatusMark}
+        style={{ backgroundColor: "yellow" }}
+      />
+    ),
+  },
+];
+
 const CreateVehicleModal = ({
   onClose,
   initialVehicleId,
+  allVehiclesData,
 }: CreateVehicleModalProps) => {
   const { data: allMarksData } = useGetAllMarks();
   const { data: allModelsData } = useGetAllModels();
-  const { data: allVehiclesData } = useGetAllVehicles();
 
   const { mutate: createVehicleMutate, isPending: isPendingCreate } =
     useCreateVehicle();
@@ -281,6 +304,38 @@ const CreateVehicleModal = ({
               }}
             />
           </div>
+
+          {isEditMode && (
+            <div className={Styles.VehicleRow}>
+              <UniversalSelect
+                title="Status"
+                onSelect={(item) => {
+                  setVehiclePayload((prev) => ({
+                    ...prev!,
+                    status: (item as SelectItem).id as
+                      | "AVAILABLE"
+                      | "SOLD"
+                      | "RESERVED",
+                  }));
+                }}
+                label={
+                  vehiclePayload?.status
+                    ? STATUS_OPTIONS.find(
+                        (option) => option.id === vehiclePayload.status
+                      )?.label || "Selecione um status"
+                    : "Selecione um status"
+                }
+                sx={{ wrapper: { flex: 1 }, button: { width: "100%" } }}
+                selectedItem={
+                  STATUS_OPTIONS.find(
+                    (option) => option.id === vehiclePayload?.status
+                  ) || undefined
+                }
+                itemsData={STATUS_OPTIONS}
+                required
+              />
+            </div>
+          )}
         </div>
       </div>
     </BaseModal>

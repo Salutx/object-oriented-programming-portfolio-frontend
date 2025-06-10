@@ -6,6 +6,9 @@ import Tooltip from "@/components/Tooltip";
 import Image from "next/image";
 import Icon from "@/components/Icon";
 import { generateColorFromName } from "@/utils/generateColorFromName";
+import { useDeleteVehicle } from "@/queries/Vehicles.queries";
+import CreateVehicleModal from "./CreateVehicleModal";
+import GenericModal from "@/components/GenericModal/GenericModal";
 
 const statusMap = {
   AVAILABLE: {
@@ -28,7 +31,9 @@ const AsideVehicleItem = ({
   onClick,
   data,
   type = "blocks",
+  allVehiclesData = [],
 }: AsideVehicleItemProps) => {
+  const { mutate: deleteVehicleMutate } = useDeleteVehicle();
   const statusConfig = statusMap[data.status] || "gray";
 
   if (type === "list") {
@@ -52,22 +57,76 @@ const AsideVehicleItem = ({
             </p>
           </div>
         </Tooltip>
-        <Chip label={data?.mark?.name} mainColor={generateColorFromName(data?.mark?.name)} />
+        <Chip
+          label={data?.mark?.name}
+          mainColor={generateColorFromName(data?.mark?.name)}
+        />
       </button>
     );
   }
 
+  const handleDeleteVehicle = () => {
+    const confirmation = confirm(
+      "Tem certeza que deseja excluir este veículo? Esta ação não pode ser desfeita."
+    );
+
+    if (confirmation) {
+      deleteVehicleMutate(data.vehicleId, {
+        onSuccess: () => {
+          alert("Veículo excluído com sucesso!");
+        },
+        onError: (error) => {
+          alert(`Erro ao excluir veículo: ${error.message}`);
+        },
+      });
+    }
+  };
+
   return (
     <button className={Styles.ContentCard}>
       <div className={Styles.ContentCard__Preview}>
+        <div className={Styles.ButtonActions}>
+          <div
+            className={Styles.ButtonAction}
+            onClick={handleDeleteVehicle}
+            title="Excluir veículo"
+            aria-label="Excluir veículo"
+            role="button"
+          >
+            <Icon name="trash-can-white" />
+          </div>
+
+          <GenericModal
+            RenderController={({ onClick }) => (
+              <div
+                className={Styles.ButtonAction}
+                onClick={onClick}
+                title="Editar veículo"
+                aria-label="Editar veículo"
+                role="button"
+              >
+                <Icon name="edit-white" />
+              </div>
+            )}
+          >
+            {({ onClose }) => (
+              <CreateVehicleModal
+                onClose={onClose}
+                initialVehicleId={data.vehicleId}
+                allVehiclesData={allVehiclesData}
+              />
+            )}
+          </GenericModal>
+        </div>
+
         <Image
           src={imagePath}
           alt="Imagem do veículo"
+          unoptimized
           width={100}
           height={100}
-          className={Styles.ContentCard__Image}
           quality={100}
-          unoptimized
+          className={Styles.ContentCard__Image}
         />
       </div>
       <div className={Styles.ContentCard__Informations}>

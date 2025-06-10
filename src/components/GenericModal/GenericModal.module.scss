@@ -70,7 +70,12 @@
   align-items: center;
   justify-content: flex-end;
   padding: 1rem;
-
   flex-shrink: 0;
   border-top: 1px solid #e6e5eb;
+}
+
+.ModalHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

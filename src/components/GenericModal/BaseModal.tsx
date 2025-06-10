@@ -14,6 +14,8 @@ const BaseModal = ({
   headerIcon = "upload",
   isLoadingConfirm = false,
   confirmWidth = "fit-content",
+  onDelete,
+  displayDelete,
 }: BaseModalProps) => {
   return (
     <div className={Styles.Modal}>
@@ -23,9 +25,17 @@ const BaseModal = ({
           <p className={Styles.ModalHeader_Title}>{title}</p>
         </div>
 
-        <button className={Styles.ModalHeader__Close} onClick={onClose}>
-          <Icon name="close" />
-        </button>
+        <div className={Styles.ModalHeaderActions}>
+          {displayDelete && (
+            <button className={Styles.ModalHeader__Close} onClick={onDelete}>
+              <Icon name="trash-can" />
+            </button>
+          )}
+
+          <button className={Styles.ModalHeader__Close} onClick={onClose}>
+            <Icon name="close" />
+          </button>
+        </div>
       </div>
 
       <div className={Styles.ModalContent}>{children}</div>

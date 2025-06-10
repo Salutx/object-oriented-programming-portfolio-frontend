@@ -1,9 +1,13 @@
 import Styles from "./ModelsSection.module.scss";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CreateModelModalProps } from "./ModelsSection.types";
 import { ModelPayload } from "@/types/Models.interfaces";
 import { SelectItem } from "@/components/UniversalSelect/UniversalSelect.types";
-import { useCreateModel } from "@/queries/Models.queries";
+import {
+  useCreateModel,
+  useDeleteModel,
+  useGetAllModels,
+} from "@/queries/Models.queries";
 import { useGetAllMarks } from "@/queries/Marks.queries";
 import BaseModal from "@/components/GenericModal/BaseModal";
 import Image from "next/image";
@@ -14,7 +18,9 @@ const CreateModelModal = ({
   onClose,
   initialModelId,
 }: CreateModelModalProps) => {
-  const { data: allMarksData } = useGetAllMarks();
+  const { data: allModelsData } = useGetAllModels();
+  const { mutate: deleteModelMutate } = useDeleteModel();
+  const { data: allMarksData, isPending: isPendingDelete } = useGetAllMarks();
   const { mutate: createModelMutate, isPending: isPendingCreate } =
     useCreateModel();
 
@@ -32,6 +38,23 @@ const CreateModelModal = ({
         } as SelectItem)
     );
   }, [allMarksData]);
+
+  const isEditMode = !!initialModelId;
+
+  useEffect(() => {
+    if (initialModelId && allModelsData) {
+      const initialModel = allModelsData.find(
+        (model) => model.modelId === initialModelId
+      );
+
+      if (initialModel) {
+        setModelPayload({
+          name: initialModel.name,
+          markId: initialModel.mark.markId,
+        });
+      }
+    }
+  }, [allModelsData, initialModelId]);
 
   const selectedMarkData: SelectItem | undefined = useMemo(() => {
     if (!formattedMarksData || formattedMarksData.length === 0)
@@ -55,15 +78,38 @@ const CreateModelModal = ({
     });
   };
 
+  const handleDeleteModel = () => {
+    if (!initialModelId) return;
+
+    const confirmation = confirm(
+      "Você tem certeza que deseja excluir este modelo? Esta ação não pode ser desfeita."
+    );
+
+    if (!confirmation) return;
+
+    deleteModelMutate(initialModelId, {
+      onSuccess: () => {
+        alert("Modelo excluído com sucesso!");
+        onClose();
+      },
+      onError: (error) => {
+        console.error("Erro ao excluir modelo:", error);
+        alert("Erro ao excluir modelo. Tente novamente mais tarde.");
+      },
+    });
+  };
+
   return (
     <BaseModal
-      title="Cadastrar modelo"
+      title={isEditMode ? "Editar Modelo" : "Cadastrar Modelo"}
       onConfirm={handleCreateModel}
-      isLoadingConfirm={isPendingCreate}
-      confirmLabel="Cadastrar modelo"
+      isLoadingConfirm={isPendingCreate || isPendingDelete}
+      confirmLabel={isEditMode ? "Editar modelo" : "Cadastrar modelo"}
       confirmWidth={130}
       headerIcon="model"
       onClose={onClose}
+      displayDelete={isEditMode}
+      onDelete={handleDeleteModel}
       disableConfirm={
         !modelPayload || !modelPayload.name || !modelPayload.markId
       }

@@ -8,9 +8,11 @@ export interface AsideVehicleItemProps {
   onClick?: VoidFunction;
   type: ViewMode;
   imagePath?: string;
+  allVehiclesData?: Vehicle[];
 }
 
 export interface CreateVehicleModalProps {
   onClose: VoidFunction;
   initialVehicleId?: number;
+  allVehiclesData?: Vehicle[];
 }
